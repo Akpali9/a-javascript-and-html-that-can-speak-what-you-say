@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Speech Recognition and Synthesis</title>
+</head>
+
+<body>
+    <h1>Speech Recognition and Synthesis</h1>
+    <button onclick="startListening()">Start Listening</button>
+    <div id="output"></div>
+
+    <script>
+        function startListening() {
+            var recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = function (event) {
+                var result = event.results[0][0].transcript;
+                document.getElementById('output').textContent = result;
+                speakText(result);
+            }
+
+            recognition.start();
+        }
+
+        function speakText(text) {
+            var msg = new SpeechSynthesisUtterance();
+            msg.text = text;
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+</body>
+
+</html>
